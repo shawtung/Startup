@@ -1,14 +1,19 @@
 /**
  * Created by Shaw on 2015/9/3.
  */
+
 //STEP 1. Import required packages
 
 import java.sql.*;
 import java.io.*;
 
+import jxl.*;
+import jxl.write.*;
+import jxl.write.biff.RowsExceededException;
+
+
 public class JDBCFun2 {
     // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://121.41.106.210:3306/51qed?useUnicode=true&characterEncoding=UTF-8";
 
     //  Database credentials
@@ -17,13 +22,13 @@ public class JDBCFun2 {
     static final String sql = "SELECT \n" +
             "    product_info.product_name AS '项目名称',\n" +
             "    user_info.real_name AS '用户姓名',\n" +
-            "    user_info.telephone AS 手机号,\n" +
-            "    ROUND(order_info.order_money) AS 订单金额,\n" +
-            "    order_info.create_time AS 订单创建时间,\n" +
-            "    order_info.pay_time AS 订单确认时间,\n" +
-            "    Z.ord AS 个人序数,\n" +
-            "    IF(Z.ord = 1, '\u662f', '\u5426') AS 是否首投,\n" +
-            "    ifnull(H.real_name,'') AS 推荐人\n" +
+            "    user_info.telephone AS '手机号',\n" +
+            "    ROUND(order_info.order_money) AS '订单金额',\n" +
+            "    order_info.create_time AS '订单创建时间',\n" +
+            "    order_info.pay_time AS '订单确认时间',\n" +
+            "    Z.ord AS '个人序数',\n" +
+            "    IF(Z.ord = 1, '\u662f', '\u5426') AS '是否首投',\n" +
+            "    ifnull(H.real_name,'') AS '推荐人'\n" +
             "FROM\n" +
             "    (SELECT @ord:=0, @pre_uid:=- 1) AS r,\n" +
             "    order_info\n" +
@@ -59,63 +64,54 @@ public class JDBCFun2 {
         Connection conn = null;
         Statement stmt = null;
         try {
-            //STEP 2: Register JDBC driver
+            //Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
 
-            //STEP 3: Open a connection
+            //Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            //STEP 4: Execute a query
+            //Execute a query
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData rsmd = rs.getMetaData();
-            File file = new File("D:/a.txt");
 
-            //STEP 5: Extract data from result set
-            System.out.print(rsmd.getColumnLabel(1) + "\t" + "\t" + "\t" + "\t" + "\t" + "\t" + "\t" + "\t");
-            System.out.print(rsmd.getColumnLabel(2) + "\t");
-            System.out.print(rsmd.getColumnLabel(3) + "\t" + "\t" + "\t");
-            System.out.print(rsmd.getColumnLabel(4) + "\t");
-            System.out.print(rsmd.getColumnLabel(5) + "\t" + "\t" + "\t" + "\t");
-            System.out.print(rsmd.getColumnLabel(6) + "\t" + "\t" + "\t" + "\t");
-            System.out.print(rsmd.getColumnLabel(7) + "\t");
-            System.out.print(rsmd.getColumnLabel(8) + "\t");
-            System.out.print(rsmd.getColumnLabel(9) + "\t");
-            System.out.println();
-            while (rs.next()) {
-                //Retrieve by column name
-             /*   int id  = rs.getInt("id");
-                String real_name = rs.getString("real_name");
+            //Extract data from result set into Excel
+            File file = new File("投资订单报表.xls");
+            WritableWorkbook wwb = Workbook.createWorkbook(file);
+            WritableSheet sheet = wwb.createSheet("爱投不投", 0);
 
-                //Display values
-                System.out.print(id+"\t");
-                System.out.print(real_name+"\t");*/
-                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                    if (i == 1) {
-                        if (rs.getString(1).length() <= 12) {
-                            System.out.print(rs.getString(i) + "\t" + "\t" + "\t" + "\t");
-                        } else {
-                            System.out.print(rs.getString(i) + "\t" + "\t");
-                        }
-                    } else if (i >= 7) {
-                        System.out.print(rs.getString(i) + "\t" + "\t" + "\t");
+            int i = 0;
+            do {
+                for (int j = 1; j <= rsmd.getColumnCount(); j++) {
+                    if (i == 0) {
+                        sheet.addCell(new Label(j - 1, i, rsmd.getColumnLabel(j)));
                     } else {
-                        System.out.print(rs.getString(i) + "\t" + "\t");
+                        sheet.addCell(new Label(j - 1, i, rs.getString(j)));
                     }
                 }
-                System.out.println();
-            }
-            //STEP 6: Clean-up environment
+            } while (rs.next() && (++i != 0));
+
+            //Clean-up environment
+            wwb.write();
+            wwb.close();
             rs.close();
             stmt.close();
             conn.close();
         } catch (SQLException se) {
             //Handle errors for JDBC
             se.printStackTrace();
+        } catch (IOException ie) {
+            //Handle errors for IO
+            ie.printStackTrace();
+        } catch (RowsExceededException ree) {
+            //Handle errors for sheet
+            ree.printStackTrace();
+        } catch (WriteException we) {
+            //Handle errors for write&close
+            we.printStackTrace();
         } catch (Exception e) {
-            //Handle errors for Class.forName
             e.printStackTrace();
         } finally {
             //finally block used to close resources
@@ -129,7 +125,7 @@ public class JDBCFun2 {
                     conn.close();
             } catch (SQLException se) {
                 se.printStackTrace();
-            }//end finally try
+            }//end finally
         }//end try
         System.out.println();
     }//end main
