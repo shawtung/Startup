@@ -7,7 +7,7 @@ import java.io.*;
  */
 public class RecurseDirectory {
     public static void main(String[] args) {
-        File f = new File("d:/JAVA/workspace");
+        File f = new File("d:/workspaces");
         System.out.println(f.getName());
         tree(f, 1);
     }
@@ -17,13 +17,13 @@ public class RecurseDirectory {
         for (int i = 0; i < level; i++) {
             pre += "    ";
         }
+
         File[] childs = f.listFiles();
         for (int i = 0; i < childs.length; i++) {
             System.out.println(pre + (childs[i].isDirectory() ? "\u2193" : "") + childs[i].getName());
             if (childs[i].isDirectory()) {
                 tree(childs[i], level + 1);
             }
-
         }
     }
 }
