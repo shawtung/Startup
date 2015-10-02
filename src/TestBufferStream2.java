@@ -19,6 +19,7 @@ public class TestBufferStream2 {
 
             //Create file
             if (!file.exists()) {
+                file.mkdir();
                 file.createNewFile();
             }
 
