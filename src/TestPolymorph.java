@@ -6,14 +6,16 @@ public class TestPolymorph {
 	}
 }
 
-abstract class Animal {
+class Animal {
 	private String name;
 	
 	Animal(String name) {
 		this.name = name;
 	}
 	
-	abstract public void enjoy();
+	static Number enjoy() {
+		return new Integer(1);
+	}
 }
 
 class Bird extends Animal {
@@ -23,9 +25,12 @@ class Bird extends Animal {
 		super(n);
 		featherColor = f;
 	}
-	
-	public void enjoy() {
+
+//	@Override
+	static protected Long enjoy() {
+		double a = 0.1f;
 		System.out.println("Bird singing...");
+		return null;
 	}
 }
 

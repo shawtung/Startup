@@ -1,11 +1,11 @@
-class Point {
+public class MyPoint {
 	// Variable
 	private double scale_x;
 	private double scale_y;
 	private double scale_z;
 
 	// Construct
-	Point(double _x, double _y, double _z) {
+	MyPoint(double _x, double _y, double _z) {
 		scale_x = _x;
 		scale_y = _y;
 		scale_z = _z;
@@ -37,7 +37,7 @@ class Point {
 
 	// Main
 	public static void main(String args[]) {
-		Point haha = new Point(3, 4, 0);
+		MyPoint haha = new MyPoint(3, 4, 0);
 		haha.displayScale();
 		System.out.println("distance="+haha.distance());
 		
