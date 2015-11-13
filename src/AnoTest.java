@@ -25,6 +25,10 @@ class Shape {
 	public static void printName() {
 		System.out.println("shape");
 	}
+
+	public int area() {
+		return 0;
+	}
 }
 
 class Circle extends Shape {

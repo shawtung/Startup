@@ -1,3 +1,4 @@
+/*
 class A {
 	void print(String s){
 		System.out.println(s);
@@ -11,7 +12,7 @@ class A {
 }
 
 
-class B extends A {
+strictfp class B extends A {
 	B(){
 		print("B()");
 	}
@@ -23,3 +24,4 @@ class B extends A {
 		b.f();
 	}
 }
+*/

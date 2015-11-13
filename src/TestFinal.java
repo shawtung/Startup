@@ -1,3 +1,4 @@
+/*
 
 public class TestFinal {
 	public static void main(String[]  args) {
@@ -20,6 +21,7 @@ class TT extends T {
 }
 
 
+*/
 
 
 
