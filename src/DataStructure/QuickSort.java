@@ -1,4 +1,5 @@
 package DataStructure;
+import java.math.BigDecimal;
 
 public class QuickSort {
 	private static void swap(int[] A, int i, int j) {
@@ -48,8 +49,7 @@ public class QuickSort {
 
 	
 	private static int[] A = { 45, 38, 65, 97, 76, 13, 27, 49 };
-	
-	
+
 	
 	public static void main(String[] args) {
 		displayArray(A);
