@@ -164,7 +164,7 @@ class ReversePolishNotation {
 	}
 
 	public static void main(String[] args) {
-		new ReversePolishNotation().calc24("4","4","10","10");
+		new ReversePolishNotation().calc24("1","5","5","5");
 	}
 
 }
