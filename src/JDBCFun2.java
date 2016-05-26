@@ -1,6 +1,7 @@
 /**
  * Created by Shaw on 2015/9/3.
- */
+ *//*
+
 
 //STEP 1. Import required packages
 
@@ -130,3 +131,4 @@ public class JDBCFun2 {
         System.out.println();
     }//end main
 }
+*/

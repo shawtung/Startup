@@ -68,6 +68,7 @@ class ReversePolishNotation {
 
 	}
 
+
 	public static boolean inArray(String s) {
 		for (String t : AnswerSet) {
 			if (s.equals(t)) {
@@ -85,7 +86,11 @@ class ReversePolishNotation {
 		return Pattern.compile("[\\+\\-\\*/]").matcher(s).matches();
 	}
 
-	public void calc24(String a, String b, String c, String d) {
+	public void calc24Int(int a, int b, int c, int d) {
+		calc24Str(String.valueOf(a),String.valueOf(b),String.valueOf(c),String.valueOf(d));
+	}
+
+	public void calc24Str(String a, String b, String c, String d) {
 		if ((!isNumeric(a) && !isSymbol(a))
 				|| (!isNumeric(b) && !isSymbol(b))
 				|| (!isNumeric(c) && !isSymbol(c))
@@ -164,7 +169,7 @@ class ReversePolishNotation {
 	}
 
 	public static void main(String[] args) {
-		new ReversePolishNotation().calc24("1","5","5","5");
+		new ReversePolishNotation().calc24Int(5, 5, 6, 6);
 	}
 
 }
